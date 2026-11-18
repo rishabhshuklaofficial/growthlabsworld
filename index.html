@@ -303,6 +303,8 @@ footer{--white:#fff;--mute:#CDBFD3;background:#2A1530;border-top:0;padding:56px 
 .facts b{display:block;font-family:'Outfit','Inter',sans-serif;font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--plum);letter-spacing:-.02em;line-height:1.1}
 .facts span{font-size:15px;color:var(--mute);font-weight:500}
 .prog{background:linear-gradient(90deg,var(--plum),var(--orange))}
+main{overflow-x:hidden}@supports (overflow:clip){main{overflow-x:clip}}
+.orbit,.orbit *{-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .hero:has(.hgrid) .glow{display:none}
 .orbit .motif{position:absolute;left:50%;top:50%;width:330px;height:330px;transform:translate(-64%,-62%);border-radius:50%;background:repeating-linear-gradient(180deg,rgba(58,66,70,.10) 0 13px,transparent 13px 26px)}
 .orbit .motif:after{content:'';position:absolute;width:150px;height:170px;left:56%;top:40%;background:rgba(244,163,64,.28);border-radius:14px}
@@ -376,12 +378,12 @@ const rot=document.querySelector('.rot');if(rot){const w=JSON.parse(rot.dataset.
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function countUp(el){el.querySelectorAll('.cu').forEach(s=>{const v=parseFloat(s.dataset.v),d=1400,t0=performance.now();const f=n=>{const p=Math.min(1,(n-t0)/d),e=1-Math.pow(1-p,3);s.textContent=Math.round(v*e);if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
 document.querySelectorAll('.stat .n').forEach(n=>{n.innerHTML=n.innerHTML.replace(/(\d+)(?![^<]*>)/g,'<span class="cu" data-v="$1">$1</span>')});
-if(window.gsap&&window.ScrollTrigger&&!RM){gsap.registerPlugin(ScrollTrigger);
- gsap.utils.toArray('.head,.chart,.lmarq').forEach(el=>gsap.from(el,{y:40,opacity:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}}));
- ScrollTrigger.batch('.card,.stat,.pc,.pain,.step,.who div,.sk,details,.offer,.ai .list div,.vals .card',{start:'top 90%',onEnter:b=>gsap.from(b,{y:50,opacity:0,duration:.8,stagger:.09,ease:'power3.out',overwrite:true})});
+if(window.gsap&&window.ScrollTrigger&&!RM){gsap.registerPlugin(ScrollTrigger);ScrollTrigger.config({ignoreMobileResize:true});addEventListener('load',()=>ScrollTrigger.refresh());setTimeout(()=>ScrollTrigger.refresh(),1500);
+ gsap.utils.toArray('.head,.chart,.lmarq').forEach(el=>gsap.from(el,{y:40,opacity:0,duration:.9,ease:'power3.out',clearProps:'transform,opacity',scrollTrigger:{trigger:el,start:'top 88%',once:true}}));
+ ScrollTrigger.batch('.card,.stat,.pc,.pain,.step,.who div,.sk,details,.offer,.ai .list div,.vals .card',{start:'top 90%',onEnter:b=>gsap.from(b,{y:50,opacity:0,duration:.8,stagger:.09,ease:'power3.out',overwrite:true,clearProps:'transform,opacity'})});
  document.querySelectorAll('.stats').forEach(s=>ScrollTrigger.create({trigger:s,start:'top 85%',once:true,onEnter:()=>countUp(s)}));
  gsap.from('.hero h1,.hero .lead,.hero .cta,.hero .kick',{y:30,opacity:0,duration:1,stagger:.12,ease:'power3.out'});
- gsap.from('.orbit',{scale:.85,opacity:0,duration:1.4,ease:'power3.out'});
+ gsap.from('.owrap',{opacity:0,y:24,duration:1.2,ease:'power3.out',clearProps:'all'});
  document.querySelectorAll('.chart path.ln').forEach(p=>{const L=p.getTotalLength();gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:2,ease:'power2.inOut',scrollTrigger:{trigger:p.closest('.chart'),start:'top 80%'}})});
 }
 const m=document.querySelector('.menu'),l=document.querySelector('.links');
